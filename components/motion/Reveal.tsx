@@ -25,7 +25,7 @@ export function Reveal({
 }) {
   const reduce = useReducedMotion();
 
-  const hidden: Record<Direction, Record<string, unknown>> = {
+  const hidden = {
     unfurl: { opacity: 0, rotateX: reduce ? 0 : -78, y: reduce ? 0 : 30 },
     iris: {
       opacity: 0,
@@ -41,7 +41,7 @@ export function Reveal({
     fade: { opacity: 0 },
   };
 
-  const visible: Record<Direction, Record<string, unknown>> = {
+  const visible = {
     unfurl: { opacity: 1, rotateX: 0, y: 0 },
     iris: { opacity: 1, clipPath: "circle(150% at 50% 50%)", scale: 1 },
     wipe: { opacity: 1, clipPath: "inset(0 0% 0 0)" },
@@ -50,7 +50,7 @@ export function Reveal({
     fade: { opacity: 1 },
   };
 
-  const variants: Variants = {
+  const variants = {
     hidden: hidden[direction],
     visible: {
       ...visible[direction],
@@ -59,7 +59,7 @@ export function Reveal({
           ? { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay }
           : { type: "spring", stiffness: 84, damping: 15, mass: 0.7, delay },
     },
-  };
+  } satisfies Variants;
 
   return (
     <motion.div

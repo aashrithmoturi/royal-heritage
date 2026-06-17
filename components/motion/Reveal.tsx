@@ -51,9 +51,9 @@ export function Reveal({
   };
 
   const variants = {
-    hidden: hidden[direction],
+    hidden: hidden[direction] as any,
     visible: {
-      ...visible[direction],
+      ...(visible[direction] as any),
       transition:
         direction === "iris" || direction === "wipe"
           ? { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay }

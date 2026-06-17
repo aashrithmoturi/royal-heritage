@@ -1,0 +1,297 @@
+@import "tailwindcss";
+
+:root,
+[data-theme="light"] {
+  --background: #fbf7ef; /* warm ivory */
+  --surface: #ffffff; /* cards */
+  --surface-soft: #f3ead6; /* tinted bands */
+  --foreground: #221634; /* deep royal ink */
+  --heading: #2a0a4a;
+  --muted: #57515f; /* secondary text */
+  --border: rgba(59, 13, 96, 0.14);
+  --page-root: #1e0635;
+  /* Royal palette */
+  --rf-royal: #3b0d60; /* imperial purple */
+  --rf-royal-deep: #1e0635;
+  --rf-wine: #6d1543;
+  --rf-gold: #d4af37;
+  --rf-gold-soft: #e8cd7a;
+  --rf-cream: #f6ecd6;
+}
+
+/* ----- Black / dark theme ----- */
+[data-theme="dark"] {
+  --background: #0b070f; /* near-black */
+  --surface: #160d20; /* raised cards */
+  --surface-soft: #120b1a; /* tinted bands */
+  --foreground: #ece6f5;
+  --heading: #f6ecd6;
+  --muted: #b0a6c0;
+  --border: rgba(212, 175, 55, 0.22);
+  --page-root: #000000;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+html {
+  background-color: var(--page-root);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), "Jost", system-ui, sans-serif;
+  letter-spacing: 0.01em;
+  overflow-x: clip;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Regal display face for headings (Cormorant Garamond) — deliberately
+   distinct from Moturi (Cinzel) and Chilkur (Playfair). */
+h1, h2, h3, h4,
+.font-display {
+  font-family: var(--font-display), "Cormorant Garamond", Georgia, serif;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+}
+
+::selection {
+  background: var(--rf-gold);
+  color: var(--rf-royal-deep);
+}
+
+/* Gold filigree scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--surface-soft); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--rf-gold), var(--rf-wine));
+  border-radius: 9999px;
+}
+
+/* ============================================================
+   FARMHOUSE — "rf-" royal motion language
+   A maharaja/heritage feel: liquid gold, aurora silk, orbiting
+   embers, ornate rotating frames. Intentionally unlike any
+   sibling site's motion vocabulary.
+   ============================================================ */
+
+/* --- Liquid gold shimmering text --- */
+@keyframes rf-gold-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.rf-gold-text {
+  background: linear-gradient(
+    100deg,
+    #b8860b 0%, #d4af37 20%, #fff3c4 38%, #d4af37 55%,
+    #8a5a00 72%, #e8cd7a 88%, #b8860b 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rf-gold-flow 7s ease-in-out infinite;
+}
+
+/* --- Royal aurora: silk gradient that breathes & drifts --- */
+@keyframes rf-aurora {
+  0%   { background-position: 0% 50%; filter: hue-rotate(0deg); }
+  50%  { background-position: 100% 50%; filter: hue-rotate(18deg); }
+  100% { background-position: 0% 50%; filter: hue-rotate(0deg); }
+}
+.rf-aurora {
+  background: linear-gradient(
+    125deg,
+    #1e0635, #3b0d60, #6d1543, #3b0d60, #2a0a4a
+  );
+  background-size: 300% 300%;
+  animation: rf-aurora 18s ease infinite;
+}
+
+/* --- Soft drifting blurred royal blobs --- */
+@keyframes rf-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(26px, -20px) scale(1.1); }
+  66%  { transform: translate(-20px, 16px) scale(0.94); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+.rf-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(64px);
+  opacity: 0.5;
+  pointer-events: none;
+  animation: rf-drift 17s ease-in-out infinite;
+}
+
+/* --- Breathing golden halo --- */
+@keyframes rf-halo {
+  0%, 100% { opacity: 0.25; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(1.12); }
+}
+.rf-halo { animation: rf-halo 5s ease-in-out infinite; }
+
+/* --- Floating embers / lotus motes --- */
+@keyframes rf-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(6deg); }
+}
+.rf-float { animation: rf-float 6.5s ease-in-out infinite; }
+.rf-float-slow { animation: rf-float 9.5s ease-in-out infinite; }
+
+/* --- Orbiting gold ember (rotates around a parent center) --- */
+@keyframes rf-orbit {
+  from { transform: rotate(0deg) translateX(var(--rf-r, 120px)) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(var(--rf-r, 120px)) rotate(-360deg); }
+}
+.rf-orbit { animation: rf-orbit 14s linear infinite; }
+
+/* --- Ornate rotating conic-gold frame (apply to a positioned parent) --- */
+@keyframes rf-spin {
+  to { transform: rotate(360deg); }
+}
+.rf-ornate { position: relative; }
+.rf-ornate::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--rf-gold) 70deg,
+    var(--rf-gold-soft) 110deg,
+    transparent 180deg,
+    var(--rf-gold) 290deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rf-spin 6s linear infinite;
+  pointer-events: none;
+}
+
+/* --- Light sheen sweep for royal buttons (apply .rf-sheen) --- */
+.rf-sheen { position: relative; overflow: hidden; }
+.rf-sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 245, 200, 0.55),
+    transparent
+  );
+  transform: skewX(-18deg);
+  transition: left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rf-sheen:hover::after { left: 130%; }
+
+/* --- 3D tilt + royal glow card --- */
+.rf-tilt {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.rf-tilt:hover {
+  transform: translateY(-10px) rotateX(7deg) rotateY(-7deg);
+  box-shadow: 0 30px 60px -22px rgba(59, 13, 96, 0.6),
+    0 0 0 1px rgba(212, 175, 55, 0.5);
+}
+.rf-stage { perspective: 1200px; }
+
+/* --- Image slow zoom + royal wash on hover (parent: .rf-group) --- */
+.rf-img {
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
+}
+.rf-group:hover .rf-img {
+  transform: scale(1.14);
+  filter: saturate(1.18) brightness(1.04);
+}
+.rf-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 13, 96, 0.45),
+    rgba(212, 175, 55, 0.3)
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+.rf-group:hover .rf-veil { opacity: 1; }
+
+/* --- Perpetual cinematic Ken-Burns for hero imagery --- */
+@keyframes rf-kenburns {
+  0%   { transform: scale(1.08) translate(0, 0); }
+  50%  { transform: scale(1.2) translate(-1.5%, 1.5%); }
+  100% { transform: scale(1.08) translate(0, 0); }
+}
+.rf-kenburns { animation: rf-kenburns 24s ease-in-out infinite; }
+
+/* --- Animated underline for nav links --- */
+.rf-link { position: relative; }
+.rf-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, var(--rf-gold), var(--rf-gold-soft));
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rf-link:hover::after { width: 100%; }
+
+/* --- Ornamental gold divider --- */
+.rf-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--rf-gold) 30%,
+    var(--rf-gold-soft) 50%,
+    var(--rf-gold) 70%,
+    transparent
+  );
+}
+
+/* --- Marquee for testimonials --- */
+@keyframes rf-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.rf-marquee { animation: rf-marquee 38s linear infinite; }
+.rf-marquee-wrap:hover .rf-marquee { animation-play-state: paused; }
+
+/* --- Subtle floating crown shimmer pulse --- */
+@keyframes rf-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+.rf-pulse { animation: rf-pulse 3.4s ease-in-out infinite; }
+
+/* --- Reduced motion: respect user preference --- */
+@media (prefers-reduced-motion: reduce) {
+  .rf-gold-text, .rf-aurora, .rf-blob, .rf-halo, .rf-float,
+  .rf-float-slow, .rf-orbit, .rf-ornate::before, .rf-kenburns,
+  .rf-marquee, .rf-pulse {
+    animation: none !important;
+  }
+  .rf-tilt:hover { transform: none; }
+  .rf-sheen::after { display: none; }
+}
